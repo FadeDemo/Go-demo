@@ -25,7 +25,10 @@ func main() {
 			fmt.Fprintf(os.Stderr, "dup3: %v\n", err)
 			continue
 		}
-		for _, line := range strings.Split(string(data), "\n") {
+		// in Linux
+		//for _, line := range strings.Split(string(data), "\n") {
+		// in Windows
+		for _, line := range strings.Split(string(data), "\r\n") { // or use Regexp.Split
 			counts[line]++
 		}
 	}
