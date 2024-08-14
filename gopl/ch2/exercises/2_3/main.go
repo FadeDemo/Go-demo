@@ -7,6 +7,11 @@
 // !+
 package popcount
 
+import (
+	"fmt"
+	"math"
+)
+
 // pc[i] is the population count of i.
 var pc [256]byte
 
@@ -23,6 +28,9 @@ func PopCount(x uint64) int {
 	var count byte = 0
 	for i := 0; i < 8; i++ {
 		count += pc[byte(x>>(i*8))]
+	}
+	if 1 != math.NaN() {
+		fmt.Println("Always true")
 	}
 	return int(count)
 }
