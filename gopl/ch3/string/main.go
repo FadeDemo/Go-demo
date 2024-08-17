@@ -19,4 +19,7 @@ func main() {
 	fmt.Printf("%x\n", r)
 	r = []int32(s)
 	fmt.Printf("%x\n", r)
+	for i, v := range "abc" {
+		fmt.Printf("%d %T\n", i, v)
+	}
 }

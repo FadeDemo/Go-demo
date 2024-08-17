@@ -13,10 +13,12 @@ import (
 	"strings"
 )
 
-var n = flag.Bool("n", false, "omit trailing newline")
-var sep = flag.String("s", " ", "separator")
+//var n = flag.Bool("n", false, "omit trailing newline")
+//var sep = flag.String("s", " ", "separator")
 
 func main() {
+	var n = flag.Bool("n", false, "omit trailing newline")
+	var sep = flag.String("s", " ", "separator")
 	// use with -n -s * a b c
 	flag.Parse()
 	fmt.Print(strings.Join(flag.Args(), *sep))
