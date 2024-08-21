@@ -38,6 +38,7 @@ var report = template.Must(template.New("issuelist").
 	Funcs(template.FuncMap{"daysAgo": daysAgo}).
 	Parse(templ))
 
+// run with args: repo:golang/go is:open json decoder
 func main() {
 	result, err := github.SearchIssues(os.Args[1:])
 	if err != nil {
