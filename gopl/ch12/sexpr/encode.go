@@ -31,14 +31,23 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 
 	case reflect.Int, reflect.Int8, reflect.Int16,
 		reflect.Int32, reflect.Int64:
-		fmt.Fprintf(buf, "%d", v.Int())
+		_, err := fmt.Fprintf(buf, "%d", v.Int())
+		if err != nil {
+			return err
+		}
 
 	case reflect.Uint, reflect.Uint8, reflect.Uint16,
 		reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		fmt.Fprintf(buf, "%d", v.Uint())
+		_, err := fmt.Fprintf(buf, "%d", v.Uint())
+		if err != nil {
+			return err
+		}
 
 	case reflect.String:
-		fmt.Fprintf(buf, "%q", v.String())
+		_, err := fmt.Fprintf(buf, "%q", v.String())
+		if err != nil {
+			return err
+		}
 
 	case reflect.Ptr:
 		return encode(buf, v.Elem())
@@ -61,7 +70,10 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 			if i > 0 {
 				buf.WriteByte(' ')
 			}
-			fmt.Fprintf(buf, "(%s ", v.Type().Field(i).Name)
+			_, err := fmt.Fprintf(buf, "(%s ", v.Type().Field(i).Name)
+			if err != nil {
+				return err
+			}
 			if err := encode(buf, v.Field(i)); err != nil {
 				return err
 			}

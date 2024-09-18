@@ -98,8 +98,9 @@ func read(lex *lexer, v reflect.Value) {
 		readList(lex, v)
 		lex.next() // consume ')'
 		return
+	default:
+		panic(fmt.Sprintf("unexpected token %q", lex.text()))
 	}
-	panic(fmt.Sprintf("unexpected token %q", lex.text()))
 }
 
 //!-read
@@ -154,8 +155,9 @@ func endList(lex *lexer) bool {
 		panic("end of file")
 	case ')':
 		return true
+	default:
+		return false
 	}
-	return false
 }
 
 //!-readlist
