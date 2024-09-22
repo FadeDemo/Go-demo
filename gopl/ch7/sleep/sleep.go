@@ -13,7 +13,6 @@ import (
 )
 
 // !+sleep
-var period = flag.Duration("period", 1*time.Second, "sleep period")
 
 // run with arg: -period 1m
 func main() {
@@ -22,5 +21,7 @@ func main() {
 	time.Sleep(*period)
 	fmt.Println()
 }
+
+var period = flag.Duration("period", 1*time.Second, "sleep period")
 
 //!-sleep
