@@ -39,50 +39,23 @@ func main() {
 
 func mandelbrot(z complex128) color.Color {
 	const iterations = 200
-	const contrast = 15
+	//const contrast = 15
 
 	var v complex128
 	for n := uint8(0); n < iterations; n++ {
 		v = v*v + z
 		if cmplx.Abs(v) > 2 {
-			return color.Gray{Y: 255 - contrast*n}
+			return colorizeYCbCr(n)
 		}
 	}
 	return color.Black
 }
 
-//!-
+func colorizeYCbCr(n uint8) color.Color {
+	// 根据迭代次数生成 YCbCr 颜色
+	y := 255 * n / 200                      // Y 分量（亮度）
+	cb := uint8(128 + 127*int(n%20)/20)     // Cb 分量（蓝色色度）
+	cr := uint8(128 + 127*int(200-n%20)/20) // Cr 分量（红色色度）
 
-//// Some other interesting functions:
-//
-//func acos(z complex128) color.Color {
-//	v := cmplx.Acos(z)
-//	blue := uint8(real(v)*128) + 127
-//	red := uint8(imag(v)*128) + 127
-//	return color.YCbCr{Y: 192, Cb: blue, Cr: red}
-//}
-//
-//func sqrt(z complex128) color.Color {
-//	v := cmplx.Sqrt(z)
-//	blue := uint8(real(v)*128) + 127
-//	red := uint8(imag(v)*128) + 127
-//	return color.YCbCr{Y: 128, Cb: blue, Cr: red}
-//}
-//
-//// f(x) = x^4 - 1
-////
-//// z' = z - f(z)/f'(z)
-////
-////	= z - (z^4 - 1) / (4 * z^3)
-////	= z - (z - 1/z^3) / 4
-//func newton(z complex128) color.Color {
-//	const iterations = 37
-//	const contrast = 7
-//	for i := uint8(0); i < iterations; i++ {
-//		z -= (z - 1/(z*z*z)) / 4
-//		if cmplx.Abs(z*z*z*z-1) < 1e-6 {
-//			return color.Gray{Y: 255 - contrast*i}
-//		}
-//	}
-//	return color.Black
-//}
+	return color.YCbCr{Y: y, Cb: cb, Cr: cr}
+}
