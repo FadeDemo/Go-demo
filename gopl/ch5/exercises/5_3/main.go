@@ -14,38 +14,35 @@ import (
 	"golang.org/x/net/html"
 )
 
-// go run ch1/fetch/main.go https://golang.org | go run ch5/exercises/5_1/main.go
+// go run ch1/fetch/main.go https://golang.org | go run ch5/exercises/5_3/main.go
 func main() {
 	doc, err := html.Parse(os.Stdin)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "findlinks1: %v\n", err)
 		os.Exit(1)
 	}
-	for _, link := range visit(nil, doc) {
-		fmt.Println(link)
-	}
+	printText(doc)
 }
 
 //!-main
 
-// !+visit
-// visit appends to links each link found in n and returns the result.
-func visit(links []string, n *html.Node) []string {
-	if n != nil {
-		if n.Type == html.ElementNode && n.Data == "a" {
-			for _, a := range n.Attr {
-				if a.Key == "href" {
-					links = append(links, a.Val)
-				}
-			}
-		}
-		links = visit(links, n.FirstChild)
-		links = visit(links, n.NextSibling)
+// printText appends to links each link found in n and returns the result.
+func printText(n *html.Node) {
+	if n.Type == html.TextNode {
+		// 输出文本节点的内容
+		fmt.Println(n.Data)
 	}
-	return links
-}
 
-//!-visit
+	// 如果遇到 <script> 或 <style> 元素，直接跳过它及其子节点的遍历
+	if n.Type == html.ElementNode && (n.Data == "script" || n.Data == "style") {
+		return
+	}
+
+	// 递归遍历子节点
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		printText(c)
+	}
+}
 
 /*
 //!+html

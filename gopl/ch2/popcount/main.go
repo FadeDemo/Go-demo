@@ -3,7 +3,7 @@
 
 // See page 45.
 
-// (Package doc comment intentionally malformed to demonstrate golint.)
+// Package popcount (Package doc comment intentionally malformed to demonstrate golint.)
 // !+
 package popcount
 

@@ -14,7 +14,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-// go run ch1/fetch/main.go https://golang.org | go run ch5/exercises/5_1/main.go
+// go run ch1/fetch/main.go https://golang.org | go run ch5/exercises/5_4/main.go
 func main() {
 	doc, err := html.Parse(os.Stdin)
 	if err != nil {
@@ -31,16 +31,42 @@ func main() {
 // !+visit
 // visit appends to links each link found in n and returns the result.
 func visit(links []string, n *html.Node) []string {
-	if n != nil {
-		if n.Type == html.ElementNode && n.Data == "a" {
+	if n.Type == html.ElementNode {
+		switch n.Data {
+		// 处理 <a> 标签的 href 属性
+		case "a":
+			for _, a := range n.Attr {
+				if a.Key == "href" {
+					links = append(links, a.Val)
+				}
+			}
+		// 处理 <img> 标签的 src 属性
+		case "img":
+			for _, a := range n.Attr {
+				if a.Key == "src" {
+					links = append(links, a.Val)
+				}
+			}
+		// 处理 <script> 标签的 src 属性
+		case "script":
+			for _, a := range n.Attr {
+				if a.Key == "src" {
+					links = append(links, a.Val)
+				}
+			}
+		// 处理 <link> 标签的 href 属性，通常用于样式表等
+		case "link":
 			for _, a := range n.Attr {
 				if a.Key == "href" {
 					links = append(links, a.Val)
 				}
 			}
 		}
-		links = visit(links, n.FirstChild)
-		links = visit(links, n.NextSibling)
+	}
+
+	// 递归处理子节点
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		links = visit(links, c)
 	}
 	return links
 }

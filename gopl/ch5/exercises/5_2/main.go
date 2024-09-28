@@ -14,38 +14,31 @@ import (
 	"golang.org/x/net/html"
 )
 
-// go run ch1/fetch/main.go https://golang.org | go run ch5/exercises/5_1/main.go
+// go run ch1/fetch/main.go https://golang.org | go run ch5/exercises/5_2/main.go
 func main() {
 	doc, err := html.Parse(os.Stdin)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "findlinks1: %v\n", err)
 		os.Exit(1)
 	}
-	for _, link := range visit(nil, doc) {
-		fmt.Println(link)
+	m := make(map[string]int)
+	count(m, doc)
+	for k, v := range m {
+		fmt.Println(k, v)
 	}
 }
 
 //!-main
 
-// !+visit
-// visit appends to links each link found in n and returns the result.
-func visit(links []string, n *html.Node) []string {
-	if n != nil {
-		if n.Type == html.ElementNode && n.Data == "a" {
-			for _, a := range n.Attr {
-				if a.Key == "href" {
-					links = append(links, a.Val)
-				}
-			}
-		}
-		links = visit(links, n.FirstChild)
-		links = visit(links, n.NextSibling)
+// count appends to links each link found in n and returns the result.
+func count(m map[string]int, n *html.Node) {
+	if n.Type == html.ElementNode {
+		m[n.Data]++
 	}
-	return links
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		count(m, c)
+	}
 }
-
-//!-visit
 
 /*
 //!+html

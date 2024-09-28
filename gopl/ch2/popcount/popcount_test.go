@@ -6,7 +6,7 @@ package popcount_test
 import (
 	"testing"
 
-	"gopl.io/ch2/popcount"
+	"github.com/FadeDemo/Go-demo/tree/main/gopl/ch2/popcount"
 )
 
 // -- Alternative implementations --

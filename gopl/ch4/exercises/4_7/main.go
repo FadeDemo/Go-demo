@@ -12,8 +12,8 @@ func main() {
 
 // !+rev
 // reverse reverses a slice of ints in place.
-func reverse(s []byte) {
-
-}
+//func reverse(s []byte) {
+//
+//}
 
 //!-rev
